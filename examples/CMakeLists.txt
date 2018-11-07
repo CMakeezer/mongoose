@@ -1,0 +1,31 @@
+message(INFO "Hello")
+function(mongooseSample name srcs)
+    add_executable(${name} ${srcs})
+    target_link_libraries(${name} PUBLIC mongoose)
+    if(WIN32)
+        target_link_libraries(${name} PUBLIC "wsock32;ws2_32")
+        target_compile_definitions(${name} PUBLIC WIN32)
+    endif()
+
+endfunction()
+
+mongooseSample(big_upload big_upload/big_upload.c)
+mongooseSample(cookie_auth cookie_authentication/cookie_auth.c)
+mongooseSample(digest_auth digest_authentication/digest_auth.c)
+mongooseSample(file_upload file_upload/file_upload.c)
+mongooseSample(form_submit form_submit/form_submit.c)
+mongooseSample(hello_world hello_world/hello_world.c)
+mongooseSample(http_client http_client/http_client.c)
+mongooseSample(mjpg_streamer mjpg_streamer/mjpg_streamer.c)
+mongooseSample(multi_threaded_server multi_threaded_server/multi_threaded_server.c)
+if(ENABLE_SSL)
+    mongooseSample(proxy_server proxy_server/proxy_server.c)
+endif()
+mongooseSample(restful_api restful_api/restful_api.c)
+mongooseSample(send_file send_file/send_file.c)
+mongooseSample(web_server web_server/web_server.c)
+mongooseSample(websocket_chat websocket_chat/websocket_chat.c)
+
+
+mongooseSample(websocket_echo_server websocket_echo_server/websocket_echo_server.c)
+

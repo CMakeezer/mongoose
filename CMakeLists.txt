@@ -5,9 +5,25 @@ project(mongoose C)
 add_library(mongoose
     mongoose.c)
 
+find_package(OpenSSL)
+option(ENABLE_SSL "Enable SSL support" OFF)
+
 target_include_directories(mongoose PUBLIC 
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	$<INSTALL_INTERFACE:include/mongoose>)
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/mongoose>)
+
+if(WIN32)
+    target_link_libraries(mongoose PUBLIC wsock32 ws2_32)
+    target_compile_definitions(mongoose PUBLIC WIN32)
+endif()
+if(ENABLE_SSL)
+    target_link_libraries(mongoose PUBLIC OpenSSL::SSL)
+    target_compile_definitions(mongoose PUBLIC NS_ENABLE_SSL)
+endif()
+
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 install(
         TARGETS mongoose
